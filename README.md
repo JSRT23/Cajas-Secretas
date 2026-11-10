@@ -26,6 +26,14 @@ cp .env.example .env
 npm run dev
 ```
 
+## Con Docker
+
+```bash
+cp .env.example .env                   # VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY
+docker compose up --build web          # producción (nginx) -> http://localhost:8080
+docker compose --profile dev up dev    # desarrollo con HMR  -> http://localhost:5173
+```
+
 ## Configurar Supabase
 
 1. Crea un proyecto en [supabase.com](https://supabase.com).

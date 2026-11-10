@@ -1,0 +1,30 @@
+# Producción local:  docker compose up --build                      -> http://localhost:8080
+# Desarrollo (HMR):  docker compose --profile dev up --build dev   -> http://localhost:5173
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY:-}
+    container_name: cajas-secretas-web
+    ports:
+      - "${PORT:-8080}:80"
+    restart: unless-stopped
+
+  dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: cajas-secretas-dev
+    ports:
+      - "${DEV_PORT:-5173}:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL:-}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY:-}
+    volumes:
+      - .:/app
+      - /app/node_modules
